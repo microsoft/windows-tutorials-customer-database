@@ -8,8 +8,6 @@ This project is the starting point for a tutorial that creates a simple app for 
 
 [Start the tutorial here.](https://docs.microsoft.com/windows/uwp/enterprise/customer-database-tutorial)
 
-![App screenshot](screenshot.png)
-
 This starting point is a single-page app with minimal UI and functionality, based on a simplified version of the [Customer Orders Database sample app](https://github.com/Microsoft/Windows-appsample-customers-orders-database).
 
 ## Run the sample
