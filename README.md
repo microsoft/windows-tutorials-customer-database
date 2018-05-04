@@ -1,14 +1,45 @@
+# Customer Database tutorial
 
-# Contributing
+This project is the starting point for a tutorial that creates a simple app for managing a list of customers. In doing so, it introduces a selection of basic concepts for enterprise apps in UWP. You'll learn how to:
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
+* Implement Create, Read, Update, and Delete operations against a local SQL database.
+* Add a data grid, to display and edit customer data in your UI.
+* Arrange UI elements together in a basic form layout.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+[Start the tutorial here.](https://docs.microsoft.com/windows/uwp/enterprise/customer-database-tutorial)
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+![App screenshot](screenshot.png)
+
+This starting point is a single-page app with minimal UI and functionality, based on a simplified version of the [Customer Orders Database sample app](https://github.com/Microsoft/Windows-appsample-customers-orders-database).
+
+## Run the sample
+
+To run this sample, [ensure you have the latest version of Visual Studio and the Windows 10 SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk). Once you've cloned/downloaded this repo, you can edit the project by opening **CustomerDatabaseTutorial.sln** with Visual Studio.
+
+You can also check out the **End-point-for-reference** branch to see the completed code for this tutorial.
+
+## Code of Interest
+
+If you run your app immediately after opening it, you'll see a few buttons at the top of a blank screen. Though it's not visible to you, the app already includes a local SQLite database provisioned with a few test customers. From here, you'll start by implementing a UI control to display those customers, and then move on to adding in operations against the database. Before you begin, here's where you'll be working.
+
+### Views
+
+**CustomerListPage.xaml** is the app's View, which defines the UI for the single page in this tutorial. Any time you need to add or change a visual element in the UI, you'll do it in this file. This tutorial will walk you through adding these elements:
+
+* A **RadDataGrid** for displaying and editing your customers. 
+* A **StackPanel** to set the initial values for a new customer.
+
+### ViewModels
+
+**ViewModels\CustomerListPageViewModel.cs** is where the fundamental logic of the app is located. Every user action taken in the view will be passed into this file for processing. In this tutorial, you'll add some new code, and implement the following methods:
+
+* **CreateNewCustomerAsync**, which initializes a new CustomerViewModel object.
+* **DeleteCustomerAsync**, which removes a single customer from the database.
+* **DeleteAndUpdateAsync**, which handles the delete button's logic.
+* **GetCustomerListAsync**, which retrieves a list of customers from the database.
+* **SaveInitialChangesAsync**, which adds a new customer's information to the database.
+* **UpdateCustomersAsync**, which refreshes the UI to reflect any customers added or deleted.
+
+**CustomerViewModel** is a wrapper for a customer's information, which tracks whether or not it's been recently modified. You won't need to add anything to this class, but some of the code you'll add elsewhere will reference it.
+
+For more information on how the sample is constructed, check out the [app structure overview](https://docs.microsoft.com/windows/uwp/enterprise/customer-database-app-structure).
