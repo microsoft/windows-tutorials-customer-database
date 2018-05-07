@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:telerikGrid="using:Telerik.UI.Xaml.Controls.Grid"
     NavigationCacheMode="Required"
     mc:Ignorable="d">
 
@@ -32,8 +33,57 @@
                     Label="Update"
                     ToolTipService.ToolTip="Update to server" />
             </CommandBar>
-            <!--Add StackPanel here-->
-            <!--Add DataGrid here -->
+            <StackPanel
+                x:Name="newCustomerPanel"
+                Orientation="Horizontal"
+                x:Load="{x:Bind ViewModel.AddingNewCustomer, Mode=OneWay}"
+                RelativePanel.Below="mainCommandBar">
+                <TextBox
+                    Header="First name"
+                    PlaceholderText="First"
+                    Margin="8,8,16,8"
+                    MinWidth="120"
+                    Text="{x:Bind ViewModel.SelectedCustomer.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox
+                    Header="Last name"
+                    PlaceholderText="Last"
+                    Margin="0,8,16,8"
+                    MinWidth="120"
+                    Text="{x:Bind ViewModel.SelectedCustomer.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox
+                    Header="Address"
+                    PlaceholderText="1234 Address St, Redmond WA 00000"
+                    Margin="0,8,16,8"
+                    MinWidth="280"
+                    Text="{x:Bind ViewModel.SelectedCustomer.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox
+                    Header="Company"
+                    PlaceholderText="Company"
+                    Margin="0,8,16,8"
+                    MinWidth="120"
+                    Text="{x:Bind ViewModel.SelectedCustomer.Company, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <AppBarButton
+                    x:Name="DeleteNewCustomer"
+                    Click="{x:Bind ViewModel.DeleteCustomerAsync}"
+                    Icon="Cancel"/>
+                <AppBarButton
+                    x:Name="SaveNewCustomer"
+                    Click="{x:Bind ViewModel.SaveInitialChangesAsync}"
+                    Icon="Save"/>
+            </StackPanel>
+            <telerikGrid:RadDataGrid
+                x:Name="DataGrid"
+                BorderThickness="0"
+                ColumnDataOperationsMode="Flyout"
+                GridLinesVisibility="None"
+                GroupPanelPosition="Left"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                RelativePanel.Below="newCustomerPanel"
+                ItemsSource="{x:Bind ViewModel.Customers}"
+                UserEditMode="Inline"
+                SelectedItem="{x:Bind ViewModel.SelectedCustomer, Mode=TwoWay}"/>
+
         </RelativePanel>
 
     </Grid>

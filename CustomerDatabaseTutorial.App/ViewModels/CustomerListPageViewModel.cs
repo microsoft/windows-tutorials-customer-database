@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace CustomerDatabaseTutorial.App.ViewModels
 {
-    public class CustomerListPageViewModel
+    public class CustomerListPageViewModel : INotifyPropertyChanged
     {
         public CustomerListPageViewModel()
         {
@@ -20,6 +20,25 @@ namespace CustomerDatabaseTutorial.App.ViewModels
 
         public ObservableCollection<CustomerViewModel> Customers { get => _customers; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private bool _addingNewCustomer = false;
+
+        public bool AddingNewCustomer
+        {
+            get => _addingNewCustomer;
+            set
+            {
+                if (_addingNewCustomer != value)
+                {
+                    _addingNewCustomer = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private CustomerViewModel _selectedCustomer;
 
@@ -31,39 +50,69 @@ namespace CustomerDatabaseTutorial.App.ViewModels
                 if (_selectedCustomer != value)
                 {
                     _selectedCustomer = value;
+                    OnPropertyChanged();
+                    AddingNewCustomer = false;
                 }
             }
         }
 
         public async Task CreateNewCustomerAsync()
         {
-            // Update this method
+            CustomerViewModel newCustomer = new CustomerViewModel(new Models.Customer());
+            SelectedCustomer = newCustomer;
+            await App.Repository.Customers.UpsertAsync(SelectedCustomer.Model);
+            AddingNewCustomer = true;
         }
 
 
         public async Task DeleteCustomerAsync()
         {
-            // Update this method
+            if (SelectedCustomer != null)
+            {
+                await App.Repository.Customers.DeleteAsync(_selectedCustomer.Model.Id);
+                AddingNewCustomer = false;
+            }
         }
 
         public async void DeleteAndUpdateAsync()
         {
-            // Update this method
+            await DeleteCustomerAsync();
+            await UpdateCustomersAsync();
         }
 
         public async Task GetCustomerListAsync()
         {
-            // Update this method
+            var customers = await App.Repository.Customers.GetAsync();
+            if (customers == null)
+            {
+                return;
+            }
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                Customers.Clear();
+                foreach (var c in customers)
+                {
+                    Customers.Add(new CustomerViewModel(c));
+                }
+            });
         }
 
         public async Task SaveInitialChangesAsync()
         {
-            // Update this method
+            await App.Repository.Customers.UpsertAsync(SelectedCustomer.Model);
+            await GetCustomerListAsync();
+            AddingNewCustomer = false;
         }
 
         public async Task UpdateCustomersAsync()
         {
-            // Update this method
+            foreach (var modifiedCustomer in Customers
+                .Where(x => x.IsModified).Select(x => x.Model))
+            {
+                await App.Repository.Customers.UpsertAsync(modifiedCustomer);
+            }
+            await GetCustomerListAsync();
+            AddingNewCustomer = false;
         }
     }
 }
