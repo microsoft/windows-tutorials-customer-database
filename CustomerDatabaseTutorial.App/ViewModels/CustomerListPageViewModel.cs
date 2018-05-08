@@ -36,9 +36,12 @@ namespace CustomerDatabaseTutorial.App.ViewModels
                 {
                     _addingNewCustomer = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(EnableCommandBar));
                 }
             }
         }
+
+        public bool EnableCommandBar => !AddingNewCustomer;
 
         private CustomerViewModel _selectedCustomer;
 
@@ -51,7 +54,21 @@ namespace CustomerDatabaseTutorial.App.ViewModels
                 {
                     _selectedCustomer = value;
                     OnPropertyChanged();
-                    AddingNewCustomer = false;
+                }
+            }
+        }
+
+        private CustomerViewModel _newCustomer;
+
+        public CustomerViewModel NewCustomer
+        {
+            get => _newCustomer;
+            set
+            {
+                if (_newCustomer != value)
+                {
+                    _newCustomer = value;
+                    OnPropertyChanged();
                 }
             }
         }
@@ -59,24 +76,26 @@ namespace CustomerDatabaseTutorial.App.ViewModels
         public async Task CreateNewCustomerAsync()
         {
             CustomerViewModel newCustomer = new CustomerViewModel(new Models.Customer());
-            SelectedCustomer = newCustomer;
-            await App.Repository.Customers.UpsertAsync(SelectedCustomer.Model);
+            NewCustomer = newCustomer;
+            await App.Repository.Customers.UpsertAsync(NewCustomer.Model);
             AddingNewCustomer = true;
         }
 
-
-        public async Task DeleteCustomerAsync()
+        public async Task DeleteNewCustomerAsync()
         {
-            if (SelectedCustomer != null)
+            if (NewCustomer != null)
             {
-                await App.Repository.Customers.DeleteAsync(_selectedCustomer.Model.Id);
+                await App.Repository.Customers.DeleteAsync(_newCustomer.Model.Id);
                 AddingNewCustomer = false;
             }
         }
 
         public async void DeleteAndUpdateAsync()
         {
-            await DeleteCustomerAsync();
+            if (SelectedCustomer != null)
+            {
+                await App.Repository.Customers.DeleteAsync(_selectedCustomer.Model.Id);
+            }
             await UpdateCustomersAsync();
         }
 
@@ -99,8 +118,8 @@ namespace CustomerDatabaseTutorial.App.ViewModels
 
         public async Task SaveInitialChangesAsync()
         {
-            await App.Repository.Customers.UpsertAsync(SelectedCustomer.Model);
-            await GetCustomerListAsync();
+            await App.Repository.Customers.UpsertAsync(NewCustomer.Model);
+            await UpdateCustomersAsync();
             AddingNewCustomer = false;
         }
 
@@ -112,7 +131,6 @@ namespace CustomerDatabaseTutorial.App.ViewModels
                 await App.Repository.Customers.UpsertAsync(modifiedCustomer);
             }
             await GetCustomerListAsync();
-            AddingNewCustomer = false;
         }
     }
 }

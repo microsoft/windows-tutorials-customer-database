@@ -14,7 +14,7 @@ This starting point is a single-page app with minimal UI and functionality, base
 
 To run this sample, [ensure you have the latest version of Visual Studio and the Windows 10 SDK](https://developer.microsoft.com/windows/downloads/windows-10-sdk). Once you've cloned/downloaded this repo, you can edit the project by opening **CustomerDatabaseTutorial.sln** with Visual Studio.
 
-You can also check out the **End-point-for-reference** branch to see the completed code for this tutorial.
+You can also check out the **end-point-for-reference** branch to see the completed code for this tutorial.
 
 ## Code of Interest
 
@@ -32,7 +32,7 @@ If you run your app immediately after opening it, you'll see a few buttons at th
 **ViewModels\CustomerListPageViewModel.cs** is where the fundamental logic of the app is located. Every user action taken in the view will be passed into this file for processing. In this tutorial, you'll add some new code, and implement the following methods:
 
 * **CreateNewCustomerAsync**, which initializes a new CustomerViewModel object.
-* **DeleteCustomerAsync**, which removes a single customer from the database.
+* **DeleteNewCustomerAsync**, which removes a new customer before it's displayed in the UI.
 * **DeleteAndUpdateAsync**, which handles the delete button's logic.
 * **GetCustomerListAsync**, which retrieves a list of customers from the database.
 * **SaveInitialChangesAsync**, which adds a new customer's information to the database.
