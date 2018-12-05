@@ -1,3 +1,14 @@
+---
+topic: sample
+languages:
+- csharp
+products:
+- windows
+- uwp
+statusNotificationTargets:
+- codefirst
+---
+
 # Customer Database tutorial
 
 This project is the starting point for a tutorial that creates a simple app for managing a list of customers. In doing so, it introduces a selection of basic concepts for enterprise apps in UWP. You'll learn how to:
