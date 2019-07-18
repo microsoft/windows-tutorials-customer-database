@@ -6,7 +6,8 @@ products:
 - windows
 - windows-uwp
 statusNotificationTargets:
-- codefirst
+- codefirst@microsoft.com
+description: "This project is the starting point for a tutorial that creates a simple app for managing a list of customers."
 ---
 
 # Customer Database tutorial
