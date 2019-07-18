@@ -3,6 +3,7 @@ page_type: sample
 languages:
 - csharp
 products:
+- dotnet
 - windows
 - windows-uwp
 statusNotificationTargets:
